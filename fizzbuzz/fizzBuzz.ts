@@ -6,7 +6,7 @@ const DEFAULT_RULES = [
 ]
 
 export const fizzBuzz = (number: number, rules: Rule[] = DEFAULT_RULES) => {
-  if (!number || !Number.isInteger(number)) {
+  if (!number || number < 1 || !Number.isInteger(number)) {
     return
   }
 
