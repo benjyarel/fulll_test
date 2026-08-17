@@ -1,14 +1,16 @@
-import { describe, it, expect, vi } from "vitest"
+import { describe, it, expect, vi, afterEach } from "vitest"
 import { fizzBuzz } from "./fizzBuzz.js"
 describe("fizzBuzz", () => {
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
   it("prints nothing when the input is negative", () => {
     const consoleSpy = vi.spyOn(console, "log").mockImplementation(() => {})
 
     fizzBuzz(-5)
 
     expect(consoleSpy).not.toHaveBeenCalled()
-
-    consoleSpy.mockRestore()
   })
 
   it("prints nothing when the input is zero", () => {
@@ -17,8 +19,14 @@ describe("fizzBuzz", () => {
     fizzBuzz(0)
 
     expect(consoleSpy).not.toHaveBeenCalled()
+  })
 
-    consoleSpy.mockRestore()
+  it("prints nothing when the number is a float", () => {
+    const consoleSpy = vi.spyOn(console, "log").mockImplementation(() => {})
+
+    fizzBuzz(3.5)
+
+    expect(consoleSpy).not.toHaveBeenCalled()
   })
 
   it(" applies the convention of the FizzBuzz game", () => {
@@ -43,7 +51,5 @@ describe("fizzBuzz", () => {
       14,
       "FizzBuzz",
     ])
-
-    consoleSpy.mockRestore()
   })
 })
