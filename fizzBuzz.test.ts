@@ -1,6 +1,26 @@
 import { describe, it, expect, vi } from "vitest"
 import { fizzBuzz } from "./fizzBuzz.js"
 describe("fizzBuzz", () => {
+  it("prints nothing when the input is negative", () => {
+    const consoleSpy = vi.spyOn(console, "log").mockImplementation(() => {})
+
+    fizzBuzz(-5)
+
+    expect(consoleSpy).not.toHaveBeenCalled()
+
+    consoleSpy.mockRestore()
+  })
+
+  it("prints nothing when the input is zero", () => {
+    const consoleSpy = vi.spyOn(console, "log").mockImplementation(() => {})
+
+    fizzBuzz(0)
+
+    expect(consoleSpy).not.toHaveBeenCalled()
+
+    consoleSpy.mockRestore()
+  })
+
   it(" applies the convention of the FizzBuzz game", () => {
     const consoleSpy = vi.spyOn(console, "log").mockImplementation(() => {})
 
