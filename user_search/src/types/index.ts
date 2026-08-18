@@ -21,7 +21,7 @@ export interface GithubUser {
   score: number
 }
 
-export interface GithubUserSearchResponse {
+export interface GithubUserSearchResponseData {
   total_count: number
   incomplete_results: boolean
   items: GithubUser[]
