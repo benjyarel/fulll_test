@@ -34,6 +34,7 @@ describe("useGetSearchUsers", () => {
     expect(fetchMock).toHaveBeenCalledTimes(1)
     expect(fetchMock).toHaveBeenCalledWith(
       "https://api.github.com/search/users?q=A",
+      expect.objectContaining({ signal: expect.anything() }),
     )
   })
 })
