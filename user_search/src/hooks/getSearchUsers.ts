@@ -8,18 +8,19 @@ interface GetSearchUsersParams {
 const BASE_URL = "https://api.github.com/search/users"
 
 export const getSearchUsers = ({ query }: GetSearchUsersParams) => {
-  const [users, setUsers] = useState<GithubUser[]>()
+  const [users, setUsers] = useState<GithubUser[]>([])
   const [totalCount, setTotalCount] = useState(0)
 
-  const searchUrl = `${BASE_URL}?qkjhkh=${query}`
+  const searchUrl = `${BASE_URL}?q=${query}`
 
-  // Github search API doesn't provide data without query paramas
-  if (!query) {
-    return null
-  }
-
-  // TODO : add aborting controller for user's typing and back&forth
   useEffect(() => {
+    // Github search API doesn't provide data without query paramas
+    if (!query) {
+      setUsers([])
+      setTotalCount(0)
+      return
+    }
+
     const search = async () => {
       const response = await fetch(searchUrl)
 
@@ -36,7 +37,7 @@ export const getSearchUsers = ({ query }: GetSearchUsersParams) => {
 
     search()
 
-    // TODO: aborting here
+    // TODO : add aborting controller for user's typing and back&forth
     return () => {}
   }, [query])
 
