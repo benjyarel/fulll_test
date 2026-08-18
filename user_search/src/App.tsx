@@ -1,11 +1,11 @@
 import { useState, type ChangeEvent } from "react"
 import "./App.css"
-import { getSearchUsers } from "./hooks/getSearchUsers"
+import { useGetSearchUsers } from "./hooks/useGetSearchUsers"
 
 function App() {
   const [queryParams, setQueryParams] = useState("")
 
-  const { users, totalCount } = getSearchUsers({ query: queryParams })
+  const { users, totalCount } = useGetSearchUsers({ query: queryParams })
 
   const handleOnUserSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setQueryParams(e.target.value)

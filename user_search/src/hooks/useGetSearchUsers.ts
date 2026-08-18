@@ -2,12 +2,12 @@ import { useState, useEffect } from "react"
 
 import type { GithubUser, GithubUserSearchResponseData } from "../types"
 
-interface GetSearchUsersParams {
+interface UseGetSearchUsersParams {
   query: string
 }
 const BASE_URL = "https://api.github.com/search/users"
 
-export const getSearchUsers = ({ query }: GetSearchUsersParams) => {
+export const useGetSearchUsers = ({ query }: UseGetSearchUsersParams) => {
   const [users, setUsers] = useState<GithubUser[]>([])
   const [totalCount, setTotalCount] = useState(0)
 
