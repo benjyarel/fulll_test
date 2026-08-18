@@ -21,8 +21,10 @@ export const useGetSearchUsers = ({ query }: UseGetSearchUsersParams) => {
       return
     }
 
+    const controller = new AbortController()
+
     const search = async () => {
-      const response = await fetch(searchUrl)
+      const response = await fetch(searchUrl, { signal: controller.signal })
 
       if (!response.ok) {
         throw new Error(`GitHub API error: ${response.status}`)
@@ -37,8 +39,9 @@ export const useGetSearchUsers = ({ query }: UseGetSearchUsersParams) => {
 
     search()
 
-    // TODO : add aborting controller for user's typing and back&forth
-    return () => {}
+    return () => {
+      controller.abort()
+    }
   }, [query])
 
   return { users, totalCount }
