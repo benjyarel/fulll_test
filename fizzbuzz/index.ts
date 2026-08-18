@@ -1,5 +1,5 @@
 import { fizzBuzz } from "./fizzBuzz.ts"
-const run = (input: stinrg | undefined) => {
+const run = (input: string | undefined) => {
   const userNumber = Number(input)
 
   if (isNaN(userNumber)) {
