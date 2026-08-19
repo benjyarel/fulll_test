@@ -1,6 +1,6 @@
 import style from "./UserSearch.module.css"
 
-export const UserSearch = () => {
+export const UserSearch = ({ onChange }) => {
   const handleOnUserSearchChange = () => console.log("change")
   const handleOnSubmit = (e) => e.preventDefault()
 
@@ -17,7 +17,7 @@ export const UserSearch = () => {
         type="search"
         placeholder="Search a user..."
         aria-label="User search"
-        onChange={handleOnUserSearchChange}
+        onChange={onChange}
       />
     </form>
   )
