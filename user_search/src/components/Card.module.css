@@ -1,0 +1,51 @@
+.card {
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+
+  /* TODO : can be handle by the layout */
+  max-width: 100px;
+  padding: 8px;
+
+  border-radius: 4px;
+  background-color: lightgray;
+  font-size: 0.7em;
+
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+  transition: box-shadow 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+  }
+
+  img {
+    border-radius: 50%;
+    width: 48px;
+  }
+
+  .label {
+    max-width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin: 0px;
+  }
+
+  .action {
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    display: inline-block;
+    padding: 8px 0;
+    width: 100%;
+
+    background-color: dodgerblue;
+    border-radius: 4px;
+    &:hover {
+      background-color: royalblue;
+    }
+  }
+}
