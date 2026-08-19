@@ -18,6 +18,8 @@ function App() {
     query: queryParams,
   })
 
+  const hasNoResults = !!queryParams && !isLoading && users.length === 0
+
   const handleOnUserSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
     // Cancel the previous pending update so only the last keystroke
@@ -34,7 +36,11 @@ function App() {
       <Header />
       <UserSearch onChange={handleOnUserSearchChange} />
       <Toolbox selectedNumber={0} />
-      <UserList users={users} isLoading={isLoading} />
+      <UserList
+        users={users}
+        isLoading={isLoading}
+        hasNoResults={hasNoResults}
+      />
     </div>
   )
 }

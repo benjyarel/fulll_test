@@ -1,13 +1,23 @@
 .user-list {
   padding: 0 32px;
-  gap: 32px;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-  align-content: start;
-
   flex: 1;
   min-height: 0;
   overflow-y: auto;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 32px;
+  align-content: start;
+}
+
+.empty-state {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: gray;
 }
 
 .card-wrapper {
