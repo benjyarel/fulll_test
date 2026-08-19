@@ -9,13 +9,13 @@ import { UserSearch } from "./components/UserSearch"
 import { UserList } from "./components/UserList"
 
 function App() {
-  const [queryParams, setQueryParams] = useState("")
+  // const [queryParams, setQueryParams] = useState("")
 
-  const { users, totalCount } = useGetSearchUsers({ query: queryParams })
+  // const { users, totalCount } = useGetSearchUsers({ query: queryParams })
 
-  const handleOnUserSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setQueryParams(e.target.value)
-  }
+  // const handleOnUserSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
+  //   setQueryParams(e.target.value)
+  // }
 
   return (
     <>
