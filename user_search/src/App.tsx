@@ -11,7 +11,9 @@ import { UserList } from "./components/UserList"
 function App() {
   const [queryParams, setQueryParams] = useState("")
 
-  const { users, totalCount } = useGetSearchUsers({ query: queryParams })
+  const { users, totalCount, isLoading } = useGetSearchUsers({
+    query: queryParams,
+  })
 
   const handleOnUserSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setQueryParams(e.target.value)
@@ -22,7 +24,7 @@ function App() {
       <Header />
       <UserSearch onChange={handleOnUserSearchChange} />
       <Toolbox selectedNumber={0} />
-      <UserList users={users} />
+      <UserList users={users} isLoading={isLoading} />
     </div>
   )
 }

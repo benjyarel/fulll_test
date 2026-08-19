@@ -1,8 +1,12 @@
+import type { ChangeEventHandler, FormEvent } from "react"
 import style from "./UserSearch.module.css"
 
-export const UserSearch = ({ onChange }) => {
-  const handleOnUserSearchChange = () => console.log("change")
-  const handleOnSubmit = (e) => e.preventDefault()
+interface UserSearchProps {
+  onChange: ChangeEventHandler<HTMLInputElement>
+}
+
+export const UserSearch = ({ onChange }: UserSearchProps) => {
+  const handleOnSubmit = (e: FormEvent<HTMLFormElement>) => e.preventDefault()
 
   return (
     <form

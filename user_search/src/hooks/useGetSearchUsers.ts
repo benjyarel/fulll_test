@@ -37,12 +37,14 @@ const BASE_URL = "https://api.github.com/search/users"
 export const useGetSearchUsers = ({ query }: UseGetSearchUsersParams) => {
   const [users, setUsers] = useState<GithubUser[]>([])
   const [totalCount, setTotalCount] = useState(0)
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     // Github search API doesn't provide data without query paramas
     if (!query) {
       setUsers([])
       setTotalCount(0)
+      setIsLoading(false)
       return
     }
 
@@ -50,26 +52,41 @@ export const useGetSearchUsers = ({ query }: UseGetSearchUsersParams) => {
     if (cached) {
       setUsers(cached.items)
       setTotalCount(cached.total_count)
+      setIsLoading(false)
       return
     }
 
     const controller = new AbortController()
 
     const search = async () => {
-      const searchUrl = `${BASE_URL}?q=${query}`
-      const response = await fetch(searchUrl, {
-        signal: controller.signal,
-      })
+      setIsLoading(true)
 
-      if (!response.ok) {
-        throw new Error(`GitHub API error: ${response.status}`)
+      try {
+        const searchUrl = `${BASE_URL}?q=${query}`
+        const response = await fetch(searchUrl, {
+          signal: controller.signal,
+        })
+
+        if (!response.ok) {
+          throw new Error(`GitHub API error: ${response.status}`)
+        }
+
+        const data: GithubUserSearchResponseData = await response.json()
+
+        setCached(query, data)
+        setUsers(data.items)
+        setTotalCount(data.total_count)
+      } catch (error) {
+        if (controller.signal.aborted) {
+          return
+        }
+        console.error(error)
+      } finally {
+        if (controller.signal.aborted) {
+          return
+        }
+        setIsLoading(false)
       }
-
-      const data: GithubUserSearchResponseData = await response.json()
-
-      setCached(query, data)
-      setUsers(data.items)
-      setTotalCount(data.total_count)
     }
 
     search()
@@ -79,5 +96,5 @@ export const useGetSearchUsers = ({ query }: UseGetSearchUsersParams) => {
     }
   }, [query])
 
-  return { users, totalCount }
+  return { users, totalCount, isLoading }
 }
