@@ -1,0 +1,25 @@
+.toolbox {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 32px;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  button {
+    display: flex;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    color: gray;
+
+    &:hover {
+      color: black;
+    }
+  }
+}
