@@ -6,6 +6,7 @@ interface UserSearchProps {
 }
 
 export const UserSearch = ({ onChange }: UserSearchProps) => {
+  // avoid refresh page when pressing "Enter"
   const handleOnSubmit = (e: FormEvent<HTMLFormElement>) => e.preventDefault()
 
   return (
