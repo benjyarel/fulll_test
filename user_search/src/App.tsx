@@ -1,4 +1,4 @@
-import { useState, type ChangeEvent } from "react"
+import { useRef, useState, type ChangeEvent } from "react"
 import "./App.css"
 
 import { useGetSearchUsers } from "./hooks/useGetSearchUsers"
@@ -8,13 +8,27 @@ import { Toolbox } from "./components/Toolbox"
 import { UserSearch } from "./components/UserSearch"
 import { UserList } from "./components/UserList"
 
+const DEBOUNCE_DELAY = 250
+
 function App() {
   const [queryParams, setQueryParams] = useState("")
+  const debounceRef = useRef<ReturnType<typeof setTimeout>>(undefined)
 
-  const { users, totalCount } = useGetSearchUsers({ query: queryParams })
+  const { users, totalCount, isLoading } = useGetSearchUsers({
+    query: queryParams,
+  })
+
+  const hasNoResults = !!queryParams && !isLoading && users.length === 0
 
   const handleOnUserSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setQueryParams(e.target.value)
+    const value = e.target.value
+    // Cancel the previous pending update so only the last keystroke
+    // within the delay window actually triggers a search.
+    clearTimeout(debounceRef.current)
+    debounceRef.current = setTimeout(
+      () => setQueryParams(value),
+      DEBOUNCE_DELAY,
+    )
   }
 
   return (
@@ -22,7 +36,11 @@ function App() {
       <Header />
       <UserSearch onChange={handleOnUserSearchChange} />
       <Toolbox selectedNumber={0} />
-      <UserList users={users} />
+      <UserList
+        users={users}
+        isLoading={isLoading}
+        hasNoResults={hasNoResults}
+      />
     </div>
   )
 }
