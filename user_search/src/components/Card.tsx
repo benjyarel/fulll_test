@@ -1,4 +1,5 @@
 import type { ReactNode } from "react"
+import { Checkbox } from "./Checkbox"
 import styles from "./Card.module.css"
 
 const CardRoot = ({
@@ -29,7 +30,7 @@ const Action = ({ href, label }: { href: string; label: string }) => (
   </a>
 )
 
-const Checkbox = ({
+const CardCheckbox = ({
   checked,
   onChange,
   label,
@@ -38,28 +39,14 @@ const Checkbox = ({
   onChange: () => void
   label: string
 }) => (
-  <button
-    type="button"
-    role="checkbox"
-    aria-checked={checked}
-    aria-label={label}
-    className={styles.checkbox}
-    onClick={onChange}
-  >
-    {checked && (
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="3"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        aria-hidden="true"
-      >
-        <polyline points="20 6 9 17 4 12" />
-      </svg>
-    )}
-  </button>
+  <div className={styles["checkbox-slot"]}>
+    <Checkbox checked={checked} onChange={onChange} label={label} />
+  </div>
 )
 
-export const Card = Object.assign(CardRoot, { Image, Label, Action, Checkbox })
+export const Card = Object.assign(CardRoot, {
+  Image,
+  Label,
+  Action,
+  Checkbox: CardCheckbox,
+})
