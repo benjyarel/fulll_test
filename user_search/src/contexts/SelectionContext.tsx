@@ -21,12 +21,12 @@ interface SelectionContextValue {
 const SelectionContext = createContext<SelectionContextValue | null>(null)
 
 export const SelectionProvider = ({ children }: { children: ReactNode }) => {
-  const [selectedItems, setSelectedItems] = useState<Map<number, DisplayedUser>>(new Map())
+  const [selectedItems, setSelectedItems] = useState<
+    Map<number, DisplayedUser>
+  >(new Map())
   const [isSelectAllMode, setIsSelectAllMode] = useState(false)
 
   const toggleItem = useCallback((item: DisplayedUser) => {
-    // A manual toggle always leaves "select all" mode and starts a fresh
-    // selection: it never falls back to whatever was selected before.
     setIsSelectAllMode(false)
     setSelectedItems((previous) => {
       const next = new Map(previous)
@@ -63,7 +63,14 @@ export const SelectionProvider = ({ children }: { children: ReactNode }) => {
       toggleSelectAll,
       clearSelection,
     }),
-    [selectedItems, isSelectAllMode, isSelected, toggleItem, toggleSelectAll, clearSelection],
+    [
+      selectedItems,
+      isSelectAllMode,
+      isSelected,
+      toggleItem,
+      toggleSelectAll,
+      clearSelection,
+    ],
   )
 
   return (
