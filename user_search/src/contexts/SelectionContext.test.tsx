@@ -3,10 +3,10 @@ import { describe, expect, it } from "vitest"
 import { renderHook, act } from "@testing-library/react"
 
 import { SelectionProvider, useSelection } from "./SelectionContext"
-import type { GithubUser } from "../types"
+import type { DisplayedUser } from "../types"
 
-const userA = { id: 1 } as GithubUser
-const userB = { id: 2 } as GithubUser
+const userA = { id: 1 } as DisplayedUser
+const userB = { id: 2 } as DisplayedUser
 
 const wrapper = ({ children }: { children: ReactNode }) => (
   <SelectionProvider>{children}</SelectionProvider>

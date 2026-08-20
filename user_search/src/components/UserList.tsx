@@ -1,6 +1,6 @@
 import { Card } from "./Card"
 import styles from "./UserList.module.css"
-import type { GithubUser } from "../types"
+import type { DisplayedUser } from "../types"
 import { useSelection } from "../contexts/SelectionContext"
 
 export const UserList = ({
@@ -8,7 +8,7 @@ export const UserList = ({
   isLoading,
   hasNoResults,
 }: {
-  users: GithubUser[]
+  users: DisplayedUser[]
   isLoading: boolean
   hasNoResults: boolean
 }) => {
@@ -45,7 +45,8 @@ export const UserList = ({
                 src={user.avatar_url}
                 alt={`${user.login} avatar`}
               />
-              <Card.Label text={user.id} />
+              {/* displayId overrides id only for a duplicated row ("1(1)") */}
+              <Card.Label text={user.displayId ?? user.id} />
               <Card.Label text={user.login} />
               <Card.Action href={user.html_url} label="View Profile" />
             </Card>

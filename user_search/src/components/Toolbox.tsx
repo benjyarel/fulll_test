@@ -4,7 +4,15 @@ import { TrashIcon } from "./icons/TrashIcon"
 import { useSelection } from "../contexts/SelectionContext"
 import style from "./Toolbox.module.css"
 
-export const Toolbox = ({ totalCount }: { totalCount: number }) => {
+export const Toolbox = ({
+  totalCount,
+  onDuplicate,
+  onDelete,
+}: {
+  totalCount: number
+  onDuplicate: () => void
+  onDelete: () => void
+}) => {
   const { selectedItems, isSelectAllMode, toggleSelectAll } = useSelection()
   const selectedCount = isSelectAllMode ? totalCount : selectedItems.size
   const userLabel = selectedCount === 1 ? "user" : "users"
@@ -22,10 +30,10 @@ export const Toolbox = ({ totalCount }: { totalCount: number }) => {
         </span>
       </div>
       <div className={style.actions}>
-        <button type="button" aria-label="Duplicate selection">
+        <button type="button" aria-label="Duplicate selection" onClick={onDuplicate}>
           <CopyIcon />
         </button>
-        <button type="button" aria-label="Delete selection">
+        <button type="button" aria-label="Delete selection" onClick={onDelete}>
           <TrashIcon />
         </button>
       </div>

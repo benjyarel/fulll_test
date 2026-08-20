@@ -26,3 +26,10 @@ export interface GithubUserSearchResponseData {
   incomplete_results: boolean
   items: GithubUser[]
 }
+
+// A user as shown in the results list. `id` stays the real unique GitHub
+// number (needed for React keys / selection). `displayId` is only set on a
+// duplicated row: the frontend-only "(1)" suffixed text to show instead.
+export interface DisplayedUser extends GithubUser {
+  displayId?: string
+}

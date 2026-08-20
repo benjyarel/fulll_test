@@ -1,8 +1,9 @@
-import { useRef, useState, type ChangeEvent } from "react"
+import { useEffect, useRef, useState, type ChangeEvent } from "react"
 import "./App.css"
 
 import { useGetSearchUsers } from "./hooks/useGetSearchUsers"
-import { SelectionProvider } from "./contexts/SelectionContext"
+import { useSelection } from "./contexts/SelectionContext"
+import type { DisplayedUser } from "./types"
 
 import { Header } from "./components/Header"
 import { Toolbox } from "./components/Toolbox"
@@ -11,6 +12,16 @@ import { UserList } from "./components/UserList"
 
 const DEBOUNCE_DELAY = 250
 
+// Frontend-only duplication: no backend to persist it, so we just prepend a
+// copy with a fresh id (the same user can be duplicated more than once, so
+// it can't reuse the original's) and a "(1)" suffix on what's displayed.
+const duplicateUser = (user: DisplayedUser, id: number): DisplayedUser => ({
+  ...user,
+  id,
+  displayId: `${user.displayId ?? user.id}(1)`,
+  login: `${user.login}(1)`,
+})
+
 function App() {
   const [queryParams, setQueryParams] = useState("")
   const debounceRef = useRef<ReturnType<typeof setTimeout>>(undefined)
@@ -18,6 +29,15 @@ function App() {
   const { users, totalCount, isLoading } = useGetSearchUsers({
     query: queryParams,
   })
+  const { selectedItems, isSelectAllMode, clearSelection } = useSelection()
+
+  const [displayedUsers, setDisplayedUsers] = useState<DisplayedUser[]>([])
+
+  // Resynchronize with the latest search results, discarding any fake
+  // duplicate/delete done on the previous ones.
+  useEffect(() => {
+    setDisplayedUsers(users)
+  }, [users])
 
   const hasNoResults = !!queryParams && !isLoading && users.length === 0
 
@@ -32,18 +52,42 @@ function App() {
     )
   }
 
+  const getSelectedUsers = () =>
+    isSelectAllMode
+      ? displayedUsers
+      : displayedUsers.filter((user) => selectedItems.has(user.id))
+
+  const handleDelete = () => {
+    const selectedIds = new Set(getSelectedUsers().map((user) => user.id))
+    setDisplayedUsers((previous) =>
+      previous.filter((user) => !selectedIds.has(user.id)),
+    )
+    clearSelection()
+  }
+
+  const handleDuplicate = () => {
+    const timestamp = Date.now()
+    const duplicatedUsers = getSelectedUsers().map((user, index) =>
+      duplicateUser(user, timestamp + index),
+    )
+    setDisplayedUsers((previous) => [...duplicatedUsers, ...previous])
+    clearSelection()
+  }
+
   return (
     <div className="app">
       <Header />
       <UserSearch onChange={handleOnUserSearchChange} />
-      <SelectionProvider>
-        <Toolbox totalCount={totalCount} />
-        <UserList
-          users={users}
-          isLoading={isLoading}
-          hasNoResults={hasNoResults}
-        />
-      </SelectionProvider>
+      <Toolbox
+        totalCount={totalCount}
+        onDuplicate={handleDuplicate}
+        onDelete={handleDelete}
+      />
+      <UserList
+        users={displayedUsers}
+        isLoading={isLoading}
+        hasNoResults={hasNoResults}
+      />
     </div>
   )
 }
