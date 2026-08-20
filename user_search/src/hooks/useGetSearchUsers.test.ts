@@ -12,7 +12,7 @@ describe("useGetSearchUsers", () => {
     const { result } = renderHook(() => useGetSearchUsers({ query: "" }))
 
     expect(fetchMock).not.toHaveBeenCalled()
-    expect(result.current).toEqual({ users: [], totalCount: 0 })
+    expect(result.current).toEqual({ users: [], totalCount: 0, isLoading: false })
   })
 
   it("fetches users from the GitHub search API and exposes them", async () => {
@@ -24,7 +24,7 @@ describe("useGetSearchUsers", () => {
 
     const { result } = renderHook(() => useGetSearchUsers({ query: "A" }))
 
-    expect(result.current).toEqual({ users: [], totalCount: 0 })
+    expect(result.current).toEqual({ users: [], totalCount: 0, isLoading: true })
 
     await waitFor(() => {
       expect(result.current.totalCount).toBe(mockSearchResponse.total_count)

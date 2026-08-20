@@ -1,8 +1,19 @@
 import type { ReactNode } from "react"
+import { Checkbox } from "./Checkbox"
 import styles from "./Card.module.css"
 
-const CardRoot = ({ children }: { children: ReactNode }) => {
-  return <div className={styles.card}>{children}</div>
+const CardRoot = ({
+  children,
+  selected,
+}: {
+  children: ReactNode
+  selected: boolean
+}) => {
+  return (
+    <div className={styles.card} role="option" aria-selected={selected}>
+      {children}
+    </div>
+  )
 }
 
 const Image = ({ src, alt }: { src: string; alt: string }) => (
@@ -19,4 +30,23 @@ const Action = ({ href, label }: { href: string; label: string }) => (
   </a>
 )
 
-export const Card = Object.assign(CardRoot, { Image, Label, Action })
+const CardCheckbox = ({
+  checked,
+  onChange,
+  label,
+}: {
+  checked: boolean
+  onChange: () => void
+  label: string
+}) => (
+  <div className={styles["checkbox-slot"]}>
+    <Checkbox checked={checked} onChange={onChange} label={label} />
+  </div>
+)
+
+export const Card = Object.assign(CardRoot, {
+  Image,
+  Label,
+  Action,
+  Checkbox: CardCheckbox,
+})

@@ -1,0 +1,25 @@
+.checkbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+
+  border: 2px solid gray;
+  border-radius: 4px;
+  background-color: white;
+  color: white;
+  cursor: pointer;
+
+  &[aria-checked="true"] {
+    background-color: dodgerblue;
+    border-color: dodgerblue;
+  }
+
+  svg {
+    width: 14px;
+    height: 14px;
+  }
+}

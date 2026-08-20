@@ -5,6 +5,12 @@
   margin: 32px;
 }
 
+.selection {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .actions {
   display: flex;
   align-items: center;
