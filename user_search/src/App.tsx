@@ -2,6 +2,7 @@ import { useRef, useState, type ChangeEvent } from "react"
 import "./App.css"
 
 import { useGetSearchUsers } from "./hooks/useGetSearchUsers"
+import { SelectionProvider } from "./contexts/SelectionContext"
 
 import { Header } from "./components/Header"
 import { Toolbox } from "./components/Toolbox"
@@ -35,12 +36,14 @@ function App() {
     <div className="app">
       <Header />
       <UserSearch onChange={handleOnUserSearchChange} />
-      <Toolbox selectedNumber={0} />
-      <UserList
-        users={users}
-        isLoading={isLoading}
-        hasNoResults={hasNoResults}
-      />
+      <SelectionProvider>
+        <Toolbox totalCount={totalCount} />
+        <UserList
+          users={users}
+          isLoading={isLoading}
+          hasNoResults={hasNoResults}
+        />
+      </SelectionProvider>
     </div>
   )
 }
