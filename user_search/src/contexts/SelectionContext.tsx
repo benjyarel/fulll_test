@@ -7,25 +7,26 @@ import {
   type ReactNode,
 } from "react"
 
-import type { GithubUser } from "../types"
+import type { DisplayedUser } from "../types"
 
 interface SelectionContextValue {
-  selectedItems: Map<number, GithubUser>
+  selectedItems: Map<number, DisplayedUser>
   isSelectAllMode: boolean
   isSelected: (itemId: number) => boolean
-  toggleItem: (item: GithubUser) => void
+  toggleItem: (item: DisplayedUser) => void
   toggleSelectAll: () => void
+  clearSelection: () => void
 }
 
 const SelectionContext = createContext<SelectionContextValue | null>(null)
 
 export const SelectionProvider = ({ children }: { children: ReactNode }) => {
-  const [selectedItems, setSelectedItems] = useState<Map<number, GithubUser>>(new Map())
+  const [selectedItems, setSelectedItems] = useState<
+    Map<number, DisplayedUser>
+  >(new Map())
   const [isSelectAllMode, setIsSelectAllMode] = useState(false)
 
-  const toggleItem = useCallback((item: GithubUser) => {
-    // A manual toggle always leaves "select all" mode and starts a fresh
-    // selection: it never falls back to whatever was selected before.
+  const toggleItem = useCallback((item: DisplayedUser) => {
     setIsSelectAllMode(false)
     setSelectedItems((previous) => {
       const next = new Map(previous)
@@ -43,14 +44,33 @@ export const SelectionProvider = ({ children }: { children: ReactNode }) => {
     setSelectedItems(new Map())
   }, [])
 
+  const clearSelection = useCallback(() => {
+    setIsSelectAllMode(false)
+    setSelectedItems(new Map())
+  }, [])
+
   const isSelected = useCallback(
     (itemId: number) => isSelectAllMode || selectedItems.has(itemId),
     [isSelectAllMode, selectedItems],
   )
 
   const value = useMemo<SelectionContextValue>(
-    () => ({ selectedItems, isSelectAllMode, isSelected, toggleItem, toggleSelectAll }),
-    [selectedItems, isSelectAllMode, isSelected, toggleItem, toggleSelectAll],
+    () => ({
+      selectedItems,
+      isSelectAllMode,
+      isSelected,
+      toggleItem,
+      toggleSelectAll,
+      clearSelection,
+    }),
+    [
+      selectedItems,
+      isSelectAllMode,
+      isSelected,
+      toggleItem,
+      toggleSelectAll,
+      clearSelection,
+    ],
   )
 
   return (

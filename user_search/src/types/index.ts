@@ -26,3 +26,8 @@ export interface GithubUserSearchResponseData {
   incomplete_results: boolean
   items: GithubUser[]
 }
+
+// A user as shown in the results list.
+export interface DisplayedUser extends GithubUser {
+  displayId?: string
+}

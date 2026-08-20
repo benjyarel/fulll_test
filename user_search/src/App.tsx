@@ -2,7 +2,7 @@ import { useRef, useState, type ChangeEvent } from "react"
 import "./App.css"
 
 import { useGetSearchUsers } from "./hooks/useGetSearchUsers"
-import { SelectionProvider } from "./contexts/SelectionContext"
+import { useDisplayedUsers } from "./hooks/useDisplayedUsers"
 
 import { Header } from "./components/Header"
 import { Toolbox } from "./components/Toolbox"
@@ -18,6 +18,8 @@ function App() {
   const { users, totalCount, isLoading } = useGetSearchUsers({
     query: queryParams,
   })
+  const { displayedUsers, deleteSelected, duplicateSelected } =
+    useDisplayedUsers(users)
 
   const hasNoResults = !!queryParams && !isLoading && users.length === 0
 
@@ -36,14 +38,16 @@ function App() {
     <div className="app">
       <Header />
       <UserSearch onChange={handleOnUserSearchChange} />
-      <SelectionProvider>
-        <Toolbox totalCount={totalCount} />
-        <UserList
-          users={users}
-          isLoading={isLoading}
-          hasNoResults={hasNoResults}
-        />
-      </SelectionProvider>
+      <Toolbox
+        totalCount={totalCount}
+        onDuplicate={duplicateSelected}
+        onDelete={deleteSelected}
+      />
+      <UserList
+        users={displayedUsers}
+        isLoading={isLoading}
+        hasNoResults={hasNoResults}
+      />
     </div>
   )
 }
