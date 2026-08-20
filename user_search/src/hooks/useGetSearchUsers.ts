@@ -82,10 +82,9 @@ export const useGetSearchUsers = ({ query }: UseGetSearchUsersParams) => {
         }
         console.error(error)
       } finally {
-        if (controller.signal.aborted) {
-          return
+        if (!controller.signal.aborted) {
+          setIsLoading(false)
         }
-        setIsLoading(false)
       }
     }
 
