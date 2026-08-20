@@ -4,9 +4,10 @@ import { renderHook, act } from "@testing-library/react"
 
 import { SelectionProvider, useSelection } from "./SelectionContext"
 import type { DisplayedUser } from "../types"
+import { mockUser } from "../test/mocks"
 
-const userA = { id: 1 } as DisplayedUser
-const userB = { id: 2 } as DisplayedUser
+const userA: DisplayedUser = { ...mockUser, id: 1 }
+const userB: DisplayedUser = { ...mockUser, id: 2 }
 
 const wrapper = ({ children }: { children: ReactNode }) => (
   <SelectionProvider>{children}</SelectionProvider>
